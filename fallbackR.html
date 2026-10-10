@@ -8,11 +8,28 @@
     <script>
       const siteRoot = new URL('./', window.location.href);
 
-      if (navigator.onLine) {
-        window.location.replace(siteRoot.href);
-      } else {
-        window.location.replace(new URL('fallbackR-game.html', siteRoot).href);
+      async function openOfflinePage() {
+        let siteIsReachable = navigator.onLine;
+
+        if (siteIsReachable) {
+          try {
+            const response = await fetch(siteRoot.href, {
+              method: 'HEAD',
+              cache: 'no-store',
+            });
+            siteIsReachable = response.ok;
+          } catch {
+            siteIsReachable = false;
+          }
+        }
+
+        const destination = siteIsReachable
+          ? siteRoot.href
+          : new URL('fallbackR-loader.html', siteRoot).href;
+        window.location.replace(destination);
       }
+
+      openOfflinePage();
     </script>
   </head>
   <body style="margin: 0; background: #202124; color: #bdc1c6; font: 16px Arial, sans-serif">
