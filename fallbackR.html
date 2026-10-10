@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#202124" />
+    <title>Offline game</title>
+    <script>
+      if (navigator.onLine) {
+        window.location.replace('/');
+      } else {
+        window.location.replace('/fallbackR-game.html');
+      }
+    </script>
+  </head>
+  <body style="margin: 0; background: #202124; color: #bdc1c6; font: 16px Arial, sans-serif">
+    <p style="margin: 24px">Opening the offline page...</p>
+  </body>
+</html>
