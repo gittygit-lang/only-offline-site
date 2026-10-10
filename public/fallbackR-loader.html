@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Offline game</title>
+    <style>
+      html, body, iframe { width: 100%; height: 100%; margin: 0; border: 0; background: #000; }
+      #status { position: fixed; z-index: 1; top: 12px; left: 12px; color: #fff; font: 14px Arial, sans-serif; }
+    </style>
+  </head>
+  <body>
+    <p id="status">Loading offline game...</p>
+    <iframe id="game" title="Offline game" allow="fullscreen; gamepad"></iframe>
+    <script>
+      const base = new URL('./', location.href);
+      const gameUrl = new URL('fallbackR-game.html', base);
+      const shimUrl = new URL('inline-payload-xhr.js', base);
+      const status = document.getElementById('status');
+      const game = document.getElementById('game');
+      const startup = '\t\t<script type="text/javascript">\n\t\t\twindow.__eaglerPerfEnabled';
+
+      fetch(gameUrl).then((response) => {
+        if (!response.ok) throw new Error(`Game page unavailable (${response.status})`);
+        return response.text();
+      }).then((html) => {
+        if (!html.includes(startup)) throw new Error('Could not locate game startup script');
+        const shim = `<script src="${shimUrl.href}"><\/script>\n${startup}`;
+        game.addEventListener('load', () => { status.hidden = true; }, { once: true });
+        game.srcdoc = html.replace(startup, shim);
+      }).catch((error) => {
+        status.textContent = `Unable to load the offline game: ${error.message}`;
+      });
+    </script>
+  </body>
+</html>
