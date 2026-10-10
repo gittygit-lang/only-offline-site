@@ -4,12 +4,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="theme-color" content="#202124" />
-    <title>Offline game</title>
+    <title>Offline Page</title>
     <script>
+      const siteRoot = new URL('./', window.location.href);
+
       if (navigator.onLine) {
-        window.location.replace('/');
+        window.location.replace(siteRoot.href);
       } else {
-        window.location.replace('/fallbackR-game.html');
+        window.location.replace(new URL('fallbackR-game.html', siteRoot).href);
       }
     </script>
   </head>

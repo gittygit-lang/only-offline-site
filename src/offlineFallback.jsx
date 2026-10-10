@@ -34,7 +34,7 @@ export const OfflineFallbackWrapper = ({ children }) => {
                 You are currently offline. Please check your internet connection and try again.
               </p>
               <code className='mt-10'>NO_CONNECTION_DETECTED</code>
-              <p className="mt-10 text-[10px]">While you wait, why not <a href="/fallbackR.html" className="text-blue-600 underline">play a game</a>?</p>
+              <p className="mt-10 text-[10px]">While you wait, why not <a href={`${import.meta.env.BASE_URL}fallbackR.html`} className="text-blue-600 underline">play a game</a>?</p>
               <div className="mt-13 flex justify-end max-sm:mt-10">
                 <button
                   className="min-h-8 cursor-pointer rounded-full border-0 bg-blue-700 px-3 text-[13px] text-white hover:bg-blue-500"
