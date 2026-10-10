@@ -20,10 +20,18 @@
       const game = document.getElementById('game');
       const startup = '\t\t<script type="text/javascript">\n\t\t\twindow.__eaglerPerfEnabled';
 
-      fetch(gameUrl).then((response) => {
+      fetch(base.href, { method: 'HEAD', cache: 'no-store' }).then((response) => {
+        if (response.ok) {
+          location.replace(base.href);
+          return null;
+        }
+        return fetch(gameUrl);
+      }).catch(() => fetch(gameUrl)).then((response) => {
+        if (!response) return null;
         if (!response.ok) throw new Error(`Game page unavailable (${response.status})`);
         return response.text();
       }).then((html) => {
+        if (!html) return;
         if (!html.includes(startup)) throw new Error('Could not locate game startup script');
         const shim = `<script src="${shimUrl.href}"><\/script>\n${startup}`;
         game.addEventListener('load', () => { status.hidden = true; }, { once: true });
